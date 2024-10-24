@@ -72,5 +72,24 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
-  type: LoadBalancer
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reviewfilmes-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: az-devops.34.71.60.32.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: reviewfilmes
+                port:
+                  number: 80
 
