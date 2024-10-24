@@ -23,6 +23,11 @@ stages:
         inputs:
           command: 'build'
           projects: './src/Review-Filmes.sln'
+          
+      - task: CmdLine@2
+        inputs:
+          script: 'ls'
+
       - task: DotNetCoreCLI@2
         displayName: Test
         inputs:
@@ -31,16 +36,19 @@ stages:
     
     #criar nova versão do app
     - job: Release
-      displayName: 'Release Docker'
+      displayName: 'Release'
       dependsOn: BuildAndTest
       steps:
-      - task: Docker@2
+      - task: DotNetCoreCLI@2
         inputs:
-          containerRegistry: 'DockerHub'
-          repository: 'igorferrati/az-devops'
-          command: 'buildAndPush'
-          Dockerfile: './src/Review-Filmes.Web/Dockerfile'
-          buildContext: './src'
-          tags: |
-            $(Build.BuildId)
-            latest
+          azureSubscription: 'Azure subscription 1(5a2e81d1-1ba9-446a-87eb-fa6fe75eca50)'
+          command: 'publish'
+          publishWebProjects: true
+
+      #enviando para web app
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Azure subscription 1(5a2e81d1-1ba9-446a-87eb-fa6fe75eca50)'
+          appType: 'webAppLinux'
+          appName: 'lab-web-app01'
+          package: '$(System.DefaultWorkingDirectory)/**/*.zip'
