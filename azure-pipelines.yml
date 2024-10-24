@@ -19,11 +19,28 @@ stages:
       displayName: 'Executando build do projeto'
       steps:
       - task: DotNetCoreCLI@2
+        displayName: Build
         inputs:
           command: 'build'
           projects: './src/Review-Filmes.sln'
       - task: DotNetCoreCLI@2
+        displayName: Test
         inputs:
           command: 'test'
           projects: './src/Review-Filmes.Test.Unit/Review-Filmes.Test.Unit.csproj'
-
+    
+    #criar nova versão do app
+    - job: Release
+      displayName: 'Release Docker'
+      dependsOn: BuildAndTest
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'DockerHub'
+          repository: 'igorferrati/az-devops'
+          command: 'buildAndPush'
+          Dockerfile: './src/Review-Filmes.Web/Dockefile'
+          buildContext: './src'
+          tags: |
+            $(Build.BuildId)
+            latest
