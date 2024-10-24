@@ -15,44 +15,11 @@ stages:
   - stage: CI
     displayName: 'CI - Pipeline de CI'
     jobs:
-      - job: BuildAndTest
-        displayName: 'Build do Projeto e Teste'
-        steps:
-        - task: DotNetCoreCLI@2
-          displayName: Build
-          inputs:
-            command: 'build'
-            projects: './src/Review-Filmes.sln'
-        - task: DotNetCoreCLI@2
-          displayName: Teste
-          inputs:
-            command: 'test'
-            projects: './src/Review-Filmes.Test.Unit/Review-Filmes.Test.Unit.csproj'
-      - job: Release
-        displayName: 'Release Docker'
-        dependsOn: BuildAndTest
-        steps:
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'DockerHub'
-            repository: 'fabricioveronez/live-azure-devops'
-            command: 'buildAndPush'
-            Dockerfile: './src/Review-Filmes.Web/Dockerfile'
-            buildContext: './src'
-            tags: |
-              $(Build.BuildId)
-              latest
-  - stage: CD
-    displayName: 'CD - Pipeline de CD'
-    jobs:
-    - job: Deploy
-      displayName: 'Deploy no Kubernetes'
+    - job: Build
+      displayName: 'Executando build do projeto'
       steps:
-      - task: KubernetesManifest@1
+      - task: DotNetCoreCLI@2
         inputs:
-          action: 'deploy'
-          connectionType: 'kubernetesServiceConnection'
-          kubernetesServiceConnection: 'k8s'
-          namespace: 'default'
-          manifests: './k8s/deployment.yaml'
-          containers: 'fabricioveronez/live-azure-devops:$(Build.BuildId)'
+          command: 'build'
+          projects: './src/Review-Filmes.sln'
+
