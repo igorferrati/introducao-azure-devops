@@ -39,7 +39,7 @@ stages:
           containerRegistry: 'DockerHub'
           repository: 'igorferrati/az-devops'
           command: 'buildAndPush'
-          Dockerfile: './src/Review-Filmes.Web/Dockefile'
+          Dockerfile: './src/Review-Filmes.Web/Dockerfile'
           buildContext: './src'
           tags: |
             $(Build.BuildId)
