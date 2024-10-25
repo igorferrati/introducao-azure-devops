@@ -22,13 +22,13 @@ stages:
         displayName: Build
         inputs:
           command: 'build'
-          projects: './src/Review-Filmes.sln'
+          projects: $(projectPath)
 
       - task: DotNetCoreCLI@2
         displayName: Test
         inputs:
           command: 'test'
-          projects: './src/Review-Filmes.Test.Unit/Review-Filmes.Test.Unit.csproj'
+          projects: $(testPath)
     
     #criar nova versão do app
     - job: Release
@@ -40,7 +40,7 @@ stages:
           containerRegistry: 'DockerHub'
           repository: 'igorferrati/az-devops'
           command: 'buildAndPush'
-          Dockerfile: './src/Review-Filmes.Web/Dockerfile'
+          Dockerfile: $(dockerfilePath)
           buildContext: './src'
           tags: |
             $(Build.BuildId)
