@@ -24,6 +24,7 @@ stages:
               dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
               tag: $(Build.BuildId)
               buildContext: $(buildContext)          #'src'
+              containerRegistry: 'DockerHub'
 
   # - stage: CD
   #   jobs:
