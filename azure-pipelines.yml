@@ -22,7 +22,7 @@ stages:
             #set parameters pipeline variables
               imageRepository: $(imageRepository)    #'exemploapprepo'
               dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
-              tag: '$(Build.BuildId)'
+              tag: $(Build.BuildId)
               buildContext: $(buildContext)          #'src'
 
   # - stage: CD
@@ -73,18 +73,3 @@ stages:
 #           tags: |
 #             $(Build.BuildId)
 #             latest
-  
-  # - stage: CD
-  #   displayName: 'CD - Pipeline de CD'
-  #   jobs:
-  #   - job: Deploy
-  #     displayName: 'Deploy k8s'
-  #     steps:
-  #     - task: KubernetesManifest@1
-  #       inputs:
-  #         action: 'deploy'
-  #         connectionType: 'kubernetesServiceConnection'
-  #         kubernetesServiceConnection: 'Kubernetes (lab02)'
-  #         namespace: 'az-devops'
-  #         manifests: './k8s/deployment.yaml'
-  #         containers: 'igorferrati/az-devops:$(Build.BuildId)'
