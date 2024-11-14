@@ -11,40 +11,55 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+# stages:
+#   - stage: CI
+#     displayName: 'CI - Pipeline de CI'
+#     jobs:
+#     - job: BuildAndTest
+#       displayName: 'Executando build do projeto'
+#       steps:
+#       - task: DotNetCoreCLI@2
+#         displayName: Build
+#         inputs:
+#           command: 'build'
+#           projects: $(projectPath)
+
+#       - task: DotNetCoreCLI@2
+#         displayName: Test
+#         inputs:
+#           command: 'test'
+#           projects: $(testPath)
+    
+#     #criar nova versão do app
+#     - job: Release
+#       displayName: 'Release'
+#       dependsOn: BuildAndTest
+#       steps:
+#       - task: Docker@2
+#         inputs:
+#           containerRegistry: 'DockerHub'
+#           repository: 'igorferrati/az-devops'
+#           command: 'buildAndPush'
+#           Dockerfile: $(dockerfilePath)
+#           buildContext: './src'
+#           tags: |
+#             $(Build.BuildId)
+#             latest
+
 stages:
   - stage: CI
-    displayName: 'CI - Pipeline de CI'
     jobs:
-    - job: BuildAndTest
-      displayName: 'Executando build do projeto'
-      steps:
-      - task: DotNetCoreCLI@2
-        displayName: Build
-        inputs:
-          command: 'build'
-          projects: $(projectPath)
+      - job: Build
+        displayName: "Docker Build and Push"
+        steps:
+          - template: templates/ci-docker-build-push@introducao-azure-devops
+            parameters:
+            #set parameters pipeline variables
+              imageRepository: $(imageRepository)    #'exemploapprepo'
+              dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
+              tag: '$(Build.BuildId)'
+              buildContext: $(buildContext)          #'src'
 
-      - task: DotNetCoreCLI@2
-        displayName: Test
-        inputs:
-          command: 'test'
-          projects: $(testPath)
-    
-    #criar nova versão do app
-    - job: Release
-      displayName: 'Release'
-      dependsOn: BuildAndTest
-      steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'DockerHub'
-          repository: 'igorferrati/az-devops'
-          command: 'buildAndPush'
-          Dockerfile: $(dockerfilePath)
-          buildContext: './src'
-          tags: |
-            $(Build.BuildId)
-            latest
 
   - stage: CD
     displayName: 'CD - Pipeline de CD'
