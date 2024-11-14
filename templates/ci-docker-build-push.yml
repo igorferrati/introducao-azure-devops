@@ -5,6 +5,7 @@ parameters:
   imageRepository:
   dockerfilePath:
   buildContext:
+  containerRegistry:
   tag:
 
 steps:
@@ -15,7 +16,7 @@ steps:
     command: buildAndPush
     repository: "${{ parameters.imageRepository }}"
     dockerfile: "$(Build.SourcesDirectory)/${{ parameters.dockerfilePath }}"
-    containerRegistry: 'DockerHub'
+    containerRegistry: "${{ parameters.containerRegistry }}"
     buildContext: "$(Build.SourcesDirectory)/${{ parameters.buildContext }}"
     tags: |
       ${{ parameters.tag }}
