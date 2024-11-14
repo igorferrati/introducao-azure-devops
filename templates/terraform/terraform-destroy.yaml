@@ -1,0 +1,30 @@
+#terraform estudos
+
+steps:
+  # Install Terraform
+  - task: TerraformInstaller@1
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: 'latest'
+
+  # Terraform Init
+  - task: TerraformTaskV4@4
+    displayName: 'Terraform Init'
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      backendServiceArm: $(az-subscription)
+      backendAzureRmResourceGroupName: $(resource-group)
+      backendAzureRmStorageAccountName: $(storage-acc)
+      backendAzureRmContainerName: 'terraform'
+      backendAzureRmKey: 'terraform.tfstate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+
+  # Terraform Destroy
+  - task: TerraformTaskV4@4
+    displayName: 'Destroy'
+    inputs:
+      provider: 'azurerm'
+      command: 'destroy'
+      environmentServiceNameAzureRM: $(az-subscription)
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
