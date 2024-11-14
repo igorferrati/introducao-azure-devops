@@ -59,18 +59,30 @@ stages:
               dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
               buildContext: $(buildContext)          #'src'
 
-
   - stage: CD
-    displayName: 'CD - Pipeline de CD'
     jobs:
-    - job: Deploy
-      displayName: 'Deploy k8s'
-      steps:
-      - task: KubernetesManifest@1
-        inputs:
-          action: 'deploy'
-          connectionType: 'kubernetesServiceConnection'
-          kubernetesServiceConnection: 'Kubernetes (lab02)'
-          namespace: 'az-devops'
-          manifests: './k8s/deployment.yaml'
-          containers: 'igorferrati/az-devops:$(Build.BuildId)'
+      - job: Deploy
+        displayName: "Deploy WebApp for Containes"
+        steps:
+          - template: ./templates/cd-web-app-containes.yml
+            parameters:
+            #set parameters pipeline variables
+              WebAppName: $(WebAppName)                       #'app-exemplo-prd'
+              containerRegistry: $(containerRegistry)         #'containersbiz'
+              imageRepository: $(imageRepository)             #'exemploapprepo'
+              imageTag: $(imageTag)   
+              
+  # - stage: CD
+  #   displayName: 'CD - Pipeline de CD'
+  #   jobs:
+  #   - job: Deploy
+  #     displayName: 'Deploy k8s'
+  #     steps:
+  #     - task: KubernetesManifest@1
+  #       inputs:
+  #         action: 'deploy'
+  #         connectionType: 'kubernetesServiceConnection'
+  #         kubernetesServiceConnection: 'Kubernetes (lab02)'
+  #         namespace: 'az-devops'
+  #         manifests: './k8s/deployment.yaml'
+  #         containers: 'igorferrati/az-devops:$(Build.BuildId)'
