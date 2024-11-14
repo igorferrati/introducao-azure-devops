@@ -1,0 +1,19 @@
+---
+# CD - Deploy Web App Containers
+
+parameters:
+  WebAppName: 
+  prdContainerRegistry:
+  imageRepository:
+  imageTag:
+
+steps:
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'  
+      azureSubscription: 'BIZ CSP Producao - INGRAM MICRO'
+      appType: 'webAppContainer'
+      WebAppName: "${{ parameters.WebAppName }}"
+      DockerNamespace: "${{ parameters.prdContainerRegistry }}"
+      DockerRepository: "${{ parameters.imageRepository }}"
+      DockerImageTag: "${{ parameters.imageTag }}"
