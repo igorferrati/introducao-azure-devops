@@ -17,6 +17,6 @@ steps:
     containerRegistry: 'DockerHub'
     buildContext: "$(Build.SourcesDirectory)/${{ parameters.buildContext }}"
     tags: |
-      $(Build.BuildId)
+      "${{ parameters.tag }}"
       latest
     arguments: '--no-cache'
