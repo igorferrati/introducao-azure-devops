@@ -20,11 +20,11 @@ stages:
           - template: ./templates/ci-docker-build-push.yml
             parameters:
             #set parameters pipeline variables
-              imageRepository: $(imageRepository)    #'exemploapprepo'
-              dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
+              imageRepository: $(imageRepository)
+              dockerfilePath: $(dockerfilePath)
               tag: $(Build.BuildId)
-              buildContext: $(buildContext)          #'src'
-              containerRegistry: 'DockerHub'
+              buildContext: $(buildContext)
+              containerRegistry: $(containerRegistry)
 
   - stage: CD
     jobs:
@@ -38,4 +38,3 @@ stages:
               containerRegistry: $(containerRegistry)
               imageRepository: $(imageRepository)
               imageTag: $(imageTag)
-
