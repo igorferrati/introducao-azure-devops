@@ -1,0 +1,23 @@
+---
+# CI - Docker Build and Push
+
+parameters:
+  imageRepository:
+  dockerfilePath:
+  tag:
+  buildContext:
+
+steps:
+#docker build/push
+- task: Docker@2
+  displayName: Build and push an image to container registry
+  inputs:
+    command: buildAndPush
+    repository: "${{ parameters.imageRepository }}"
+    dockerfile: $(Build.SourcesDirectory)/"${{ parameters.dockerfilePath }}"
+    containerRegistry: 'Conn_ContainerRegistry_prd'
+    buildContext: $(Build.SourcesDirectory)/"${{ parameters.buildContext }}"
+    tags: |
+      "${{ parameters.tag }}"
+      "latest"
+    arguments: '--no-cache'
