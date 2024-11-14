@@ -4,7 +4,6 @@
 parameters:
   imageRepository:
   dockerfilePath:
-  tag:
   buildContext:
 
 steps:
