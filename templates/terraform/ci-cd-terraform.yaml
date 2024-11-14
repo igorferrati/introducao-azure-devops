@@ -1,0 +1,47 @@
+#terraform estudos
+
+steps:
+  # Install Terraform
+  - task: TerraformInstaller@1
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: 'latest'
+
+  # Terraform Init
+  - task: TerraformTaskV4@4
+    displayName: 'Terraform Init'
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      backendServiceArm: $(az-subscription)
+      backendAzureRmResourceGroupName: $(resource-group)
+      backendAzureRmStorageAccountName: $(storage-acc)
+      backendAzureRmContainerName: 'terraform'
+      backendAzureRmKey: 'terraform.tfstate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+
+  # Terraform Plan
+  - task: TerraformTaskV4@4
+    displayName: 'Terraform Plan'
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      environmentServiceNameAzureRM: $(az-subscription)
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+
+  # Terraform Validate
+  - task: TerraformTaskV4@4
+    displayName: 'Terraform Validate'
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+
+  # Terraform Apply
+  - task: TerraformTaskV4@4
+    displayName: 'Terraform Apply'
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      environmentServiceNameAzureRM: $(az-subscription)
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
