@@ -52,7 +52,7 @@ stages:
       - job: Build
         displayName: "Docker Build and Push"
         steps:
-          - template: templates/ci-docker-build-push@introducao-azure-devops
+          - template: ./templates/ci-docker-build-push.yml
             parameters:
             #set parameters pipeline variables
               imageRepository: $(imageRepository)    #'exemploapprepo'
