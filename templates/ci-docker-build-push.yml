@@ -15,7 +15,7 @@ steps:
     command: buildAndPush
     repository: "${{ parameters.imageRepository }}"
     dockerfile: $(Build.SourcesDirectory)/"${{ parameters.dockerfilePath }}"
-    containerRegistry: 'Conn_ContainerRegistry_prd'
+    containerRegistry: 'DockerHub'
     buildContext: $(Build.SourcesDirectory)/"${{ parameters.buildContext }}"
     tags: |
       "${{ parameters.tag }}"
