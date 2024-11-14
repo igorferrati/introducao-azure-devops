@@ -11,6 +11,33 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+stages:
+  - stage: CI
+    jobs:
+      - job: Build
+        displayName: "Docker Build and Push"
+        steps:
+          - template: ./templates/ci-docker-build-push.yml
+            parameters:
+            #set parameters pipeline variables
+              imageRepository: $(imageRepository)    #'exemploapprepo'
+              dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
+              buildContext: $(buildContext)          #'src'
+
+  - stage: CD
+    jobs:
+      - job: Deploy
+        displayName: "Deploy WebApp for Containes"
+        steps:
+          - template: ./templates/cd-web-app-containes.yml
+            parameters:
+            #set parameters pipeline variables
+              WebAppName: $(WebAppName)                       #'app-exemplo-prd'
+              containerRegistry: $(containerRegistry)         #'containersbiz'
+              imageRepository: $(imageRepository)             #'exemploapprepo'
+              imageTag: $(imageTag)   
+
+#old
 # stages:
 #   - stage: CI
 #     displayName: 'CI - Pipeline de CI'
@@ -45,33 +72,7 @@ pool:
 #           tags: |
 #             $(Build.BuildId)
 #             latest
-
-stages:
-  - stage: CI
-    jobs:
-      - job: Build
-        displayName: "Docker Build and Push"
-        steps:
-          - template: ./templates/ci-docker-build-push.yml
-            parameters:
-            #set parameters pipeline variables
-              imageRepository: $(imageRepository)    #'exemploapprepo'
-              dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
-              buildContext: $(buildContext)          #'src'
-
-  - stage: CD
-    jobs:
-      - job: Deploy
-        displayName: "Deploy WebApp for Containes"
-        steps:
-          - template: ./templates/cd-web-app-containes.yml
-            parameters:
-            #set parameters pipeline variables
-              WebAppName: $(WebAppName)                       #'app-exemplo-prd'
-              containerRegistry: $(containerRegistry)         #'containersbiz'
-              imageRepository: $(imageRepository)             #'exemploapprepo'
-              imageTag: $(imageTag)   
-              
+  
   # - stage: CD
   #   displayName: 'CD - Pipeline de CD'
   #   jobs:
