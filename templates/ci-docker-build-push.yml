@@ -5,6 +5,7 @@ parameters:
   imageRepository:
   dockerfilePath:
   buildContext:
+  tag:
 
 steps:
 #docker build/push
