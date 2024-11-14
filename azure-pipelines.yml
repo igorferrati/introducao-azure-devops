@@ -24,18 +24,18 @@ stages:
               dockerfilePath: $(dockerfilePath)      #src/exemplo.app.Web/Dockerfile'
               buildContext: $(buildContext)          #'src'
 
-  - stage: CD
-    jobs:
-      - job: Deploy
-        displayName: "Deploy WebApp for Containes"
-        steps:
-          - template: ./templates/cd-web-app-containes.yml
-            parameters:
-            #set parameters pipeline variables
-              WebAppName: $(WebAppName)                       #'app-exemplo-prd'
-              containerRegistry: $(containerRegistry)         #'containersbiz'
-              imageRepository: $(imageRepository)             #'exemploapprepo'
-              imageTag: $(imageTag)   
+  # - stage: CD
+  #   jobs:
+  #     - job: Deploy
+  #       displayName: "Deploy WebApp for Containes"
+  #       steps:
+  #         - template: ./templates/cd-web-app-containes.yml
+  #           parameters:
+  #           #set parameters pipeline variables
+  #             WebAppName: $(WebAppName)                       #'app-exemplo-prd'
+  #             containerRegistry: $(containerRegistry)         #'containersbiz'
+  #             imageRepository: $(imageRepository)             #'exemploapprepo'
+  #             imageTag: $(imageTag)   
 
 #old
 # stages:
