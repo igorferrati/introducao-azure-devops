@@ -14,9 +14,9 @@ steps:
   inputs:
     command: buildAndPush
     repository: "${{ parameters.imageRepository }}"
-    dockerfile: $(Build.SourcesDirectory)/"${{ parameters.dockerfilePath }}"
+    dockerfile: "$(Build.SourcesDirectory)/${{ parameters.dockerfilePath }}"
     containerRegistry: 'DockerHub'
-    buildContext: $(Build.SourcesDirectory)/"${{ parameters.buildContext }}"
+    buildContext: "$(Build.SourcesDirectory)/${{ parameters.buildContext }}"
     tags: |
       "${{ parameters.tag }}"
       "latest"
