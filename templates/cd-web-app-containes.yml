@@ -14,6 +14,6 @@ steps:
       azureSubscription: 'Azure subscription 1(5a2e81d1-1ba9-446a-87eb-fa6fe75eca50)'
       appType: 'webAppContainer'
       WebAppName: "${{ parameters.WebAppName }}"
-      DockerNamespace: "${{ parameters.containerRegistry }}"
+      DockerNamespace: ""
       DockerRepository: "${{ parameters.imageRepository }}"
       DockerImageTag: "${{ parameters.imageTag }}"
