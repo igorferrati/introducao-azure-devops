@@ -3,7 +3,7 @@
 
 parameters:
   WebAppName: 
-  imageRepository:
+  imagePull:
   dockerNamespace:
   imageTag:
 
@@ -15,5 +15,5 @@ steps:
       appType: 'webAppContainer'
       WebAppName: "${{ parameters.WebAppName }}"
       DockerNamespace: "${{ parameters.dockerNamespace }}"
-      DockerRepository: "${{ parameters.imageRepository }}"
+      DockerRepository: "${{ parameters.imagePull }}"
       DockerImageTag: "${{ parameters.imageTag }}"
