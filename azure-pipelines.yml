@@ -35,6 +35,6 @@ stages:
             parameters:
             #set parameters pipeline variables
               WebAppName: $(WebAppName) 
-              # containerRegistry: $(containerRegistry)
+              containerRegistry: $(dockerNamespace)
               imageRepository: $(imageRepository)
               imageTag: $(imageTag)
